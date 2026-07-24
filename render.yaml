@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: marketforge-ai
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: MARKETFORGE_ENV
+        value: render
+      - key: MARKETFORGE_DOCS
+        value: "false"
+      - key: MARKETFORGE_ALLOWED_HOSTS
+        value: "*"

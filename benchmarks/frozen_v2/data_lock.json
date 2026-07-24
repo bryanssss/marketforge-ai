@@ -1,0 +1,9 @@
+{
+  "archives": [],
+  "benchmark_id": "marketforge-prospective-v2",
+  "datasets": [],
+  "note": "Future provider archives cannot be frozen before 3 November 2026.",
+  "provider": "binance-public-data",
+  "provider_checksum_verified": false,
+  "status": "unprepared"
+}

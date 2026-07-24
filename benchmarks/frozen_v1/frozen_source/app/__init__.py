@@ -1,0 +1,1 @@
+"""MarketForge AI application package."""

@@ -1,0 +1,9 @@
+{
+  "archives": [],
+  "benchmark_id": "marketforge-prospective-v1",
+  "created_at": null,
+  "datasets": [],
+  "provider": "binance-public-data",
+  "provider_checksum_verified": false,
+  "status": "unprepared"
+}

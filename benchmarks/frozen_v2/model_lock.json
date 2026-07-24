@@ -1,0 +1,56 @@
+{
+  "created_at": "2026-07-24T09:30:00Z",
+  "kronos_source": {
+    "commit": "d5ffd46ab061af1146ea415e4ce86d24b5231b01",
+    "compatibility_patch": "marketforge-preserve-kronos-amount-v1",
+    "repository": "https://github.com/shiyu-coder/Kronos"
+  },
+  "lock_version": "2.0.0",
+  "models": {
+    "kronos-base": {
+      "model_safetensors_sha256": "abff193acab6db1a0368e9773e75799d11403b6d054ee6d5f0a11aeabc5f4b83",
+      "repo_id": "NeoQuasar/Kronos-base",
+      "revision": "2b554741eca47781b64468546e77fef3e85130e6",
+      "revision_published_at": "2025-09-09T00:00:00Z",
+      "tokenizer": "kronos-tokenizer-base"
+    },
+    "kronos-mini": {
+      "model_safetensors_sha256": "a7d5f37e2e9fbd9891f7d7d4f72574512dd1f704fee14223e0a8cd0fbf54197c",
+      "repo_id": "NeoQuasar/Kronos-mini",
+      "revision": "f4e68697d9d5aed55cef5c96aabc3376bcad9f81",
+      "revision_published_at": "2025-09-09T00:00:00Z",
+      "tokenizer": "kronos-tokenizer-2k"
+    },
+    "kronos-small": {
+      "model_safetensors_sha256": "b082dfcbd8e8c142a725c8bbb99781802f38fec81210e13479effb32b3c3e020",
+      "repo_id": "NeoQuasar/Kronos-small",
+      "revision": "901c26c1332695a2a8f243eb2f37243a37bea320",
+      "revision_published_at": "2025-09-09T00:00:00Z",
+      "tokenizer": "kronos-tokenizer-base"
+    },
+    "marketforge-ensemble": {
+      "implementation": "app.services.forecast_service",
+      "revision": "marketforge-ai-0.4.0",
+      "tokenizer": null
+    },
+    "marketforge-naive": {
+      "implementation": "app.services.forecast_service",
+      "revision": "marketforge-ai-0.4.0",
+      "tokenizer": null
+    }
+  },
+  "tokenizers": {
+    "kronos-tokenizer-2k": {
+      "model_safetensors_sha256": "b97ec46b3b72160509e289183eaf7bdf5f0dac5bb9b49522f6d46638a99a8717",
+      "repo_id": "NeoQuasar/Kronos-Tokenizer-2k",
+      "revision": "26966d0035065a0cae0ebad7af8ece35bc1fb51c",
+      "revision_published_at": "2025-09-09T00:00:00Z"
+    },
+    "kronos-tokenizer-base": {
+      "model_safetensors_sha256": "59d85f6af76a2c3b8240ea06cb21db4213b4eeca053f246b23e29cf832fc6bee",
+      "repo_id": "NeoQuasar/Kronos-Tokenizer-base",
+      "revision": "0e0117387f39004a9016484a186a908917e22426",
+      "revision_published_at": "2025-09-09T00:00:00Z"
+    }
+  }
+}

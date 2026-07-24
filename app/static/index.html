@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MarketForge AI is an evidence-aware market forecasting, validation and walk-forward backtesting studio.">
+  <title>MarketForge AI — Evidence-Aware Market Research</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="MarketForge AI home"><span class="logo">MF</span><span>MarketForge <b>AI</b></span></a>
+    <div class="status" aria-live="polite"><span id="statusDot" class="dot"></span><span id="statusText">Checking engines…</span></div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">EVIDENCE-AWARE MARKET RESEARCH</p>
+        <h1>Forecast scenarios.<br><span>Test ideas without fooling yourself.</span></h1>
+        <p class="lead">Clean candle data, compare transparent forecasting baselines, inspect uncertainty and run chronological tests that enter after the signal—not at a price that was already used to create it.</p>
+        <div class="hero-actions">
+          <label class="button primary" for="fileInput">Choose CSV</label>
+          <a class="button secondary" href="/api/sample">Download sample</a>
+          <a class="button secondary" href="/docs">Open API docs</a>
+        </div>
+      </div>
+      <aside class="hero-card" aria-label="Research integrity summary">
+        <p class="eyebrow">RESEARCH GUARDRAILS</p>
+        <ol>
+          <li>Chronological forecasts only</li>
+          <li>Next-open simulated entry</li>
+          <li>No overlapping capital by default</li>
+          <li>No hidden model fallback</li>
+          <li>Unverified training cut-offs are disclosed</li>
+        </ol>
+        <div class="hero-stat"><small>RELEASE</small><strong>0.4.0 Final Audit</strong></div>
+      </aside>
+    </section>
+
+    <section class="workspace" id="workspace">
+      <aside class="panel controls">
+        <div class="panel-heading"><div><p class="eyebrow">01 / INPUTS</p><h2>Research setup</h2></div></div>
+
+        <input id="fileInput" type="file" accept=".csv,text/csv" hidden>
+        <button id="dropZone" class="drop-zone" type="button" aria-describedby="fileHelp">
+          <span class="upload-icon">⇧</span>
+          <strong id="fileName">Drop CSV here</strong>
+          <small id="fileHelp">OHLC required · timestamp and volume recommended · max 15 MB</small>
+        </button>
+
+        <div class="tabs" role="tablist" aria-label="Research mode">
+          <button class="tab active" data-tab="forecast" type="button" role="tab" aria-selected="true">Forecast</button>
+          <button class="tab" data-tab="backtest" type="button" role="tab" aria-selected="false">Backtest</button>
+        </div>
+
+        <div id="forecastControls" class="control-group">
+          <label>Forecast engine
+            <select id="engine">
+              <option value="auto">Auto — Kronos with visible fallback</option>
+              <option value="baseline">Transparent baseline</option>
+              <option value="kronos">Kronos only</option>
+            </select>
+          </label>
+          <label>Baseline model
+            <select id="baselineModel">
+              <option value="ensemble" selected>Ensemble — recommended</option>
+              <option value="block_bootstrap">Moving-block bootstrap</option>
+              <option value="drift">Robust drift</option>
+              <option value="naive">Near-persistence</option>
+            </select>
+          </label>
+          <label>Kronos model
+            <select id="modelSize">
+              <option value="mini">Mini — lightest, 2,048 context</option>
+              <option value="small" selected>Small — balanced, 512 context</option>
+              <option value="base">Base — heavier, 512 context</option>
+            </select>
+          </label>
+          <div class="two-col">
+            <label>Future candles<input id="horizon" type="number" min="1" max="240" value="24"></label>
+            <label>History candles<input id="lookback" type="number" min="40" max="2048" value="256"></label>
+          </div>
+          <div class="two-col">
+            <label>Block size<input id="blockSize" type="number" min="1" max="64" value="8"></label>
+            <label>Kronos draws<input id="kronosSamples" type="number" min="1" max="8" value="4"></label>
+          </div>
+          <label>Baseline paths <span id="pathsValue">200</span><input id="paths" type="range" min="20" max="1000" step="20" value="200"></label>
+          <button id="forecastButton" class="button primary full" type="button">Generate forecast</button>
+        </div>
+
+        <div id="backtestControls" class="control-group hidden">
+          <label>Forecast model
+            <select id="btModel">
+              <option value="ensemble" selected>Ensemble — recommended</option>
+              <option value="block_bootstrap">Moving-block bootstrap</option>
+              <option value="drift">Robust drift</option>
+              <option value="naive">Near-persistence</option>
+            </select>
+          </label>
+          <div class="two-col">
+            <label>Forecast horizon<input id="btHorizon" type="number" min="1" max="120" value="12"></label>
+            <label>History candles<input id="btLookback" type="number" min="40" max="1024" value="160"></label>
+          </div>
+          <div class="two-col">
+            <label>Test every N candles<input id="btStep" type="number" min="1" max="120" value="12"></label>
+            <label>Block size<input id="btBlockSize" type="number" min="1" max="64" value="8"></label>
+          </div>
+          <label>Trade threshold (%)<input id="threshold" type="number" min="0" max="25" step="0.05" value="0.25"></label>
+          <label>Trade direction<select id="direction"><option value="long_short">Long and short</option><option value="long_only">Long only</option><option value="short_only">Short only</option></select></label>
+          <div class="two-col">
+            <label>Fee each side (%)<input id="fee" type="number" min="0" max="5" step="0.01" value="0.10"></label>
+            <label>Slippage each side (%)<input id="slippage" type="number" min="0" max="5" step="0.01" value="0.05"></label>
+          </div>
+          <div class="two-col">
+            <label>Position size (%)<input id="positionSize" type="number" min="1" max="100" step="1" value="100"></label>
+            <label>Execution delay<input id="executionDelay" type="number" min="1" max="5" value="1"></label>
+          </div>
+          <div class="two-col">
+            <label>Stop loss % (optional)<input id="stopLoss" type="number" min="0.01" max="50" step="0.1" placeholder="None"></label>
+            <label>Take profit % (optional)<input id="takeProfit" type="number" min="0.01" max="100" step="0.1" placeholder="None"></label>
+          </div>
+          <label class="checkbox-row"><input id="allowOverlap" type="checkbox"><span>Allow overlapping positions (advanced and easier to misuse)</span></label>
+          <button id="backtestButton" class="button primary full" type="button">Run walk-forward test</button>
+        </div>
+      </aside>
+
+      <section class="panel results" aria-live="polite">
+        <div class="panel-heading">
+          <div><p class="eyebrow">02 / RESULTS</p><h2 id="resultsTitle">Ready when you are</h2></div>
+          <button id="exportButton" class="button ghost hidden" type="button">Export JSON</button>
+        </div>
+        <div id="integrityBanner" class="integrity-banner">Kronos historical results must not be called clean out-of-sample until its model training cut-off is independently verified.</div>
+        <div id="emptyState" class="empty-state">
+          <div class="orb"><span></span></div>
+          <h3>Your evidence panel will appear here</h3>
+          <p>Start with the sample file or upload OHLCV candle data.</p>
+        </div>
+        <div id="loadingState" class="empty-state hidden"><div class="spinner"></div><h3>Running the research…</h3><p>Kronos can take much longer than the transparent baseline.</p></div>
+        <div id="errorBox" class="error-box hidden" role="alert"></div>
+        <div id="fallbackBox" class="fallback-box hidden"></div>
+        <div id="resultContent" class="hidden">
+          <div id="metrics" class="metrics"></div>
+          <canvas id="chart" height="390" aria-label="Forecast or equity chart"></canvas>
+          <div class="result-grid">
+            <div><h3>Data quality</h3><div id="dataReport" class="report-list"></div></div>
+            <div><h3>Evidence notes</h3><div id="notes" class="report-list"></div></div>
+          </div>
+          <div id="forecastEvidence" class="evidence-card hidden"><h3>Forecast evidence</h3><div id="forecastMetrics" class="metrics compact"></div></div>
+          <div id="tradesWrap" class="hidden"><h3>Latest simulated trades</h3><div class="table-wrap"><table><thead><tr><th>Signal</th><th>Entry</th><th>Side</th><th>Exit reason</th><th>Predicted</th><th>Trade result</th><th>Equity</th></tr></thead><tbody id="tradesBody"></tbody></table></div></div>
+        </div>
+      </section>
+    </section>
+
+    <section class="trust-grid">
+      <article><span>✓</span><h3>Honest execution timing</h3><p>Signals use only completed history, then simulated trades enter on a later candle open.</p></article>
+      <article><span>↯</span><h3>Dependency-aware baseline</h3><p>Moving blocks retain short runs of candle shape, return and volume behaviour instead of shuffling every return independently.</p></article>
+      <article><span>⌁</span><h3>Forecasts and trades separated</h3><p>Accuracy includes forecasts that did not trigger trades, reducing selective reporting.</p></article>
+    </section>
+  </main>
+
+  <footer><p>Research and education only. Not financial advice or a promise of profit.</p><p>Local mode keeps files on your computer; a hosted deployment sends files to that host.</p></footer>
+  <script src="/static/app.js"></script>
+</body>
+</html>

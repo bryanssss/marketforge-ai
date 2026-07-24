@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use MarketForge AI in research, cite the repository and separately cite any Kronos model or paper used."
+title: "MarketForge AI"
+type: software
+authors:
+  - family-names: "Minchev"
+    given-names: "Boyan"
+version: 0.4.0
+date-released: 2026-07-24
+license: MIT
+repository-code: "https://github.com/bryanssss/marketforge-ai"
+abstract: "Evidence-aware market-data validation, probabilistic forecasting and chronological backtesting studio with optional Kronos integration."
+keywords:
+  - financial forecasting
+  - backtesting
+  - time series
+  - Kronos

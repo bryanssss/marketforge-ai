@@ -1,0 +1,24 @@
+services:
+  marketforge:
+    build:
+      context: .
+    ports:
+      - "127.0.0.1:7070:7070"
+    environment:
+      MARKETFORGE_ENV: container
+      MARKETFORGE_DOCS: "false"
+      MARKETFORGE_MAX_UPLOAD_BYTES: "15728640"
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,noexec,nosuid,nodev
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD", "python", "-c", "import json,urllib.request; assert json.load(urllib.request.urlopen('http://127.0.0.1:7070/api/health', timeout=3))['status']=='ready'"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s

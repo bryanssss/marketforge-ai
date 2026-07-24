@@ -1,0 +1,34 @@
+name: Bug report
+description: Report reproducible incorrect behaviour.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Never attach private market data, credentials or exchange keys.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Include the exact steps and the expected result.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: MarketForge version
+      placeholder: 0.4.0
+    validations:
+      required: true
+  - type: dropdown
+    id: engine
+    attributes:
+      label: Engine
+      options: [Baseline, Kronos Mini, Kronos Small, Kronos Base, Not applicable]
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Safe diagnostics
+      description: Include the request ID and data fingerprint, but not the data itself.
