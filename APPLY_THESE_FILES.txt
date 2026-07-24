@@ -1,0 +1,12 @@
+MARKETFORGE GITHUB ACTIONS HOTFIX
+
+1. Extract this ZIP.
+2. Copy the .github folder and RELEASE_MANIFEST.json into your local marketforge-ai repository.
+3. Allow Windows to replace the existing files.
+4. Open GitHub Desktop.
+5. Commit with: Fix GitHub Actions dependency audit
+6. Push origin.
+7. On GitHub, close pull requests #3 and #5 through #9 without merging.
+8. Pull requests #1, #2 and #4 should become obsolete because this hotfix already applies those action upgrades.
+
+This patch does not change the frozen benchmark v2 source or preregistration seal.

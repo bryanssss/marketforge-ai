@@ -1,7 +1,7 @@
 {
   "project": "MarketForge AI",
   "version": "0.4.0",
-  "generated_at_utc": "2026-07-24T09:47:42.904419+00:00",
+  "generated_at_utc": "2026-07-24T10:57:57.288176+00:00",
   "file_count": 120,
   "files": [
     {
@@ -21,8 +21,8 @@
     },
     {
       "path": ".github/dependabot.yml",
-      "bytes": 373,
-      "sha256": "9e88ed58242e823984608f4e65a7b3c73868142d739292de8ed63fa3c078ffb5"
+      "bytes": 986,
+      "sha256": "180bbcd940bcec98d69380805b42acc6b813aa78d10e7c517568642179d530cf"
     },
     {
       "path": ".github/pull_request_template.md",
@@ -32,22 +32,22 @@
     {
       "path": ".github/workflows/benchmark-smoke.yml",
       "bytes": 1444,
-      "sha256": "5a02b7e6841deed463d91dc41f65f8d76f0ca6fa6f5baed2a12376cc73fc4df3"
+      "sha256": "5c07e8931ff448c0da168bdf98f65bec3099f3fff524f107ccb25df9b2ba523d"
     },
     {
       "path": ".github/workflows/codeql.yml",
       "bytes": 453,
-      "sha256": "072fe754439fdb26dc0e7a9543c51116218f74b06604f22323fbfd29b7ee6f4b"
+      "sha256": "362db06fbd81b890cdb9e8adba5f4db9280b4c2fe65705cc130fca5651845689"
     },
     {
       "path": ".github/workflows/security.yml",
-      "bytes": 464,
-      "sha256": "c775d4d4764314f13b81390bc82ad00c59268fdcefc894a33169ef67d2fc5b28"
+      "bytes": 809,
+      "sha256": "d9ecb63b0dc682747f0466fac9e51f54ba41cf0dc342eec2444ef48acd688f6c"
     },
     {
       "path": ".github/workflows/tests.yml",
       "bytes": 943,
-      "sha256": "b7613c73178f02b08e3aa62cb9c5f84fdf4b61277b8697df7961e18b64ab1a54"
+      "sha256": "feec19b6654936349b1540affecff744ced465057877e50f846db08b71474864"
     },
     {
       "path": ".gitignore",
@@ -56,8 +56,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 3056,
-      "sha256": "6b6f3ab86b1d0036f0ab2f89f6c0c5fe0be3f6c00e3a15eac67c607f14d1860f"
+      "bytes": 3587,
+      "sha256": "0ebf31dbb790bff641dad3a204936513e2e2a4e2f0a5d1965336f7595cfc3187"
     },
     {
       "path": "CITATION.cff",

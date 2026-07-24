@@ -5,13 +5,36 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    exclude-paths:
+      # These manifests are intentionally frozen for the preregistered benchmark
+      # and optional Kronos compatibility environment. Review them manually.
+      - "requirements-benchmark.txt"
+      - "requirements-kronos.txt"
+    groups:
+      python-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
   - package-ecosystem: docker
     directory: /
     schedule:
       interval: weekly
     open-pull-requests-limit: 3
+    ignore:
+      # Python 3.11 is deliberate for the tested application container.
+      - dependency-name: "python"
+        versions:
+          - ">=3.12"
