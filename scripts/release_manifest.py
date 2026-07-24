@@ -31,7 +31,7 @@ def main() -> int:
         )
     payload = {
         "project": "MarketForge AI",
-        "version": "0.4.0",
+        "version": "0.5.0",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
         "file_count": len(files),
         "files": files,

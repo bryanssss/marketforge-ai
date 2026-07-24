@@ -1,19 +1,26 @@
 # Release Checklist
 
 - [ ] Version updated in `app/core/config.py`, `pyproject.toml`, `CITATION.cff` and `CHANGELOG.md`
-- [ ] `python -m compileall -q app tests scripts run.py`
-- [ ] `ruff check . --select E,F,I,B --ignore E501,B008`
+- [ ] `python -m compileall -q app tests scripts run.py desktop.py`
+- [ ] `ruff check app run.py --select E9,F63,F7,F82`
 - [ ] `pytest -q --cov=app --cov-fail-under=78`
 - [ ] `node --check app/static/app.js`
-- [ ] Docker image builds and `/api/health` passes
-- [ ] No `.env`, private data, credentials, virtual environment or model weights included
-- [ ] Optional Kronos integration tested against a recorded upstream commit
+- [ ] Public connector parsers tested with recorded synthetic payloads
+- [ ] Live connector limitations documented; no credentials required or accepted
+- [ ] SQLite workspace excluded from Git and temporary database removed from package
+- [ ] Report export, project storage and replication analyser smoke-tested
+- [ ] Desktop build scripts reviewed; platform executable tested when one is distributed
+- [ ] Docker image builds and `/api/health` passes when Docker is available
+- [ ] No `.env`, private data, credentials, virtual environment, database or model weights included
+- [ ] Optional Kronos integration tested against a recorded upstream commit when practical
 - [ ] Third-party notices reviewed
-- [ ] Research claims include data range, fingerprint, costs and limitations
-- [ ] `python scripts/benchmark.py preregister` verifies without changing the lock
-- [ ] `python scripts/benchmark.py status` reports the expected benchmark ID and seal status
-- [ ] Future completed results pass `verify-results` deterministic replay before reporting
-- [ ] Prospective benchmark status is reported as incomplete before the collection date
-- [ ] `preregistration_lock.json` is committed before the scored holdout begins
-- [ ] Any benchmark-code change uses a new benchmark ID instead of replacing the lock
+- [ ] Research claims include data range, fingerprint, costs, calibration and limitations
+- [ ] `python scripts/benchmark.py preregister` verifies without changing the v3 lock
+- [ ] `python scripts/benchmark.py status` reports `marketforge-prospective-v3`
+- [ ] Completed frozen results pass deterministic `verify-results` replay before reporting
+- [ ] Prospective benchmark remains `INCOMPLETE` before the collection date
+- [ ] Any benchmark-code change uses a new benchmark ID instead of replacing v3
+- [ ] `python scripts/release_manifest.py` regenerated after all file changes
+- [ ] Release manifest verified against every packaged file
+- [ ] ZIP extracted into a clean directory and the complete checks rerun
 - [ ] Git tag and GitHub release notes created

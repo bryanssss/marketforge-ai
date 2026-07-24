@@ -1,131 +1,158 @@
-# Publish MarketForge AI on GitHub — Beginner Guide
+# Publish MarketForge AI 0.5 on GitHub — Beginner Guide
 
-Think of GitHub as a public online folder for computer projects. You are putting
-a copy of the project there so other people can see it and help improve it.
+Think of GitHub as a public online folder that remembers every saved version of a
+software project.
 
-## Easiest Method: GitHub Desktop
+## Updating an Existing MarketForge Repository
 
-### 1. Make a GitHub account
+If `marketforge-ai` is already connected to GitHub Desktop:
 
-Go to `https://github.com/` and create an account. Remember your username and
-password.
+1. Download and extract the MarketForge AI 0.5 release ZIP.
+2. Open the extracted folder and copy all project files.
+3. Open your existing local `marketforge-ai` repository folder.
+4. Paste the files and choose **Replace files in the destination**.
+5. Do not copy `.venv`, `storage/marketforge.db`, downloaded model weights or private data.
+6. Open GitHub Desktop and review the changed-file list.
+7. Use this commit message:
+
+```text
+Release MarketForge AI 0.5 research workbench
+```
+
+8. Click **Commit to main** and then **Push origin**.
+9. Open GitHub Actions and wait for the newest Quality checks, CodeQL and benchmark
+   smoke checks.
+10. Create a `v0.5.0` prerelease only after the newest checks are green.
+
+## Publishing a New Repository
+
+### 1. Create a GitHub Account
+
+Create an account at `https://github.com/`.
 
 ### 2. Install GitHub Desktop
 
-Go to `https://desktop.github.com/`, download GitHub Desktop and sign in with
-your GitHub account.
+Download GitHub Desktop from `https://desktop.github.com/` and sign in.
 
-### 3. Unzip this project
+### 3. Extract the Project
 
-Right-click `marketforge-ai.zip`, choose **Extract All**, and place the folder
-somewhere simple, for example:
+Right-click the release ZIP, choose **Extract All**, and place the folder somewhere
+simple, for example:
 
 ```text
 C:\Users\YourName\Documents\marketforge-ai
 ```
 
-Do not open or upload the ZIP itself. Use the extracted folder.
+Do not upload only the ZIP. GitHub should contain the files and folders inside it.
 
-### 4. Add the folder to GitHub Desktop
+### 4. Add It to GitHub Desktop
 
 1. Open GitHub Desktop.
-2. Click **File**.
-3. Click **Add local repository**.
-4. Select the extracted `marketforge-ai` folder.
-5. If it says the folder is not a Git repository, click **create a repository**.
-6. Keep the repository name as `marketforge-ai`.
-7. Make sure **Git ignore** and **Licence** are left as **None**, because those
-   files are already included.
-8. Click **Create repository**.
+2. Click **File → Add local repository**.
+3. Select the extracted `marketforge-ai` folder.
+4. When asked, create a repository in that folder.
+5. Keep the name `marketforge-ai`.
+6. Leave Git ignore and Licence as **None** because the project already includes them.
 
-### 5. Make the first save
+### 5. Create the First Commit
 
-GitHub calls a project save a **commit**.
-
-1. In the bottom-left Summary box, type:
-   `MarketForge AI 0.4 prospective benchmark preregistration`
-2. Click **Commit to main**.
-
-### 6. Put it online
-
-1. Click **Publish repository** near the top.
-2. Keep the name `marketforge-ai`.
-3. Untick **Keep this code private** when you want everyone to see it.
-4. Click **Publish repository**.
-
-Your project is now on GitHub.
-
-
-## Protect the Frozen Benchmark
-
-Version 0.4 contains a sealed research test. Think of it like putting an exam
-inside a locked envelope **before** anybody sees the questions.
-
-The file below proves what the rules and benchmark code were before the future
-market candles existed:
+Use:
 
 ```text
-benchmarks/frozen_v2/preregistration_lock.json
+MarketForge AI 0.5 prospective v3 preregistration
 ```
 
-Publish that file with the first GitHub commit. After publishing it:
+Click **Commit to main**.
 
-- Do not edit `benchmarks/frozen_v2/spec.json`.
-- Do not edit `benchmarks/frozen_v2/model_lock.json`.
-- Do not edit benchmark-related Python code for this benchmark ID.
-- Do not replace the preregistration lock.
-- Create a new benchmark ID when the rules or code need to change.
+### 6. Publish It
 
-You can check that the seal is still valid with:
+1. Click **Publish repository**.
+2. Untick **Keep this code private** when the preregistration must be publicly verifiable.
+3. Click **Publish repository**.
+
+## Protect the Official Frozen Benchmark
+
+MarketForge AI 0.5 contains the official prospective v3 protocol. Think of it as a
+sealed exam prepared before the future market candles exist.
+
+The public proof file is:
+
+```text
+benchmarks/frozen_v3/preregistration_lock.json
+```
+
+After publishing it:
+
+- do not edit `benchmarks/frozen_v3/spec.json`;
+- do not edit `benchmarks/frozen_v3/model_lock.json`;
+- do not replace the preregistration lock;
+- do not change benchmark-bound code under the same identifier;
+- create `frozen_v4` when a later methodology needs to change.
+
+Verify the seal with:
 
 ```bash
 python scripts/benchmark.py preregister
 python scripts/benchmark.py status
 ```
 
-The future data is not ready until **3 November 2026**. Before that date, the
-benchmark must remain `INCOMPLETE BY DESIGN`. That is good: it proves the scored
-data did not exist when the rules were frozen.
+Before 3 November 2026, the correct status is:
 
-## Very Important: GitHub Does Not Run This Python App
+```text
+PREREGISTERED — INCOMPLETE BY DESIGN
+```
 
-GitHub stores the code, like an online cupboard. GitHub Pages only runs simple
-static websites and cannot run this Python forecasting server.
+Versions 1 and 2 remain historical audit records. Do not delete or rewrite them.
 
-To make a live website, deploy the repository to a Python hosting service such
-as Render. A `Dockerfile` and `render.yaml` are included for that later step.
-The lightweight baseline can run on a small server. Real Kronos models need much more memory and may require paid CPU or GPU hosting. A hosted website receives uploaded files, so publish a privacy policy before inviting other people to upload data.
+## Files That Must Never Be Published
 
-## How to Run It on Your Windows Computer
+- `.env`
+- API keys or passwords
+- exchange secret keys
+- wallet secrets
+- private trading exports
+- confidential datasets
+- `.venv`
+- `storage/marketforge.db`
+- downloaded Kronos weights
+- `vendor/Kronos`
+- generated frozen benchmark results that have not been reviewed
 
-1. Install Python 3.10, 3.11, 3.12 or 3.13 from `https://www.python.org/downloads/`.
-2. During installation, tick **Add Python to PATH**.
-3. Double-click `start_windows.bat`.
-4. Wait for the black window to install the project packages.
-5. Your browser should open `http://127.0.0.1:7070`.
+The included `.gitignore` blocks common local files, but always review GitHub Desktop's
+changed-file list before committing.
 
-The first package installation requires an internet connection.
+## GitHub Does Not Run the Python Server
 
-## How to Add the Real Kronos Model
+GitHub stores the source code. GitHub Pages cannot run this FastAPI application.
 
-First run MarketForge AI normally so its `.venv` folder is created. Then:
+Run it locally with:
 
-1. Install GitHub Desktop, which also installs Git.
-2. Double-click `scripts\install_kronos_windows.bat`.
-3. Wait while Kronos and the heavier AI packages are downloaded.
-4. Restart MarketForge AI.
+```text
+start_windows.bat
+```
 
-The first real Kronos forecast can be slow because model files must be downloaded
-from Hugging Face. Start with **Kronos Mini** on an ordinary computer.
+or:
 
-## Never Upload These Things
+```bash
+./start_mac_linux.sh
+```
 
-- Passwords
-- API keys
-- Exchange secret keys
-- Private trading exports
-- The `.venv` folder
-- Downloaded model weights
+A hosted deployment requires a Python service or container host. Hosted processing is
+not local processing: uploaded files reach the server operator.
 
-The included `.gitignore` helps stop several of these from being uploaded, but
-you should still check before every commit.
+## Create the v0.5.0 Release
+
+After the newest Actions are green:
+
+1. Open **Releases → Create a new release**.
+2. Create tag `v0.5.0` from the newest green `main` commit.
+3. Use title:
+
+```text
+MarketForge AI 0.5.0 — Research Workbench and Prospective Benchmark v3
+```
+
+4. Mark it as a prerelease.
+5. Attach the audited ZIP and its `.sha256` file.
+6. State clearly that the prospective benchmark is incomplete and no superiority claim
+   currently exists.

@@ -4,14 +4,14 @@ on:
   push:
     paths:
       - "app/benchmark/**"
-      - "benchmarks/frozen_v2/**"
+      - "benchmarks/frozen_v3/**"
       - "scripts/benchmark.py"
       - "tests/test_benchmark_*.py"
       - ".github/workflows/benchmark-smoke.yml"
   pull_request:
     paths:
       - "app/benchmark/**"
-      - "benchmarks/frozen_v2/**"
+      - "benchmarks/frozen_v3/**"
       - "scripts/benchmark.py"
       - "tests/test_benchmark_*.py"
       - ".github/workflows/benchmark-smoke.yml"
@@ -34,9 +34,9 @@ jobs:
         run: pytest -q tests/test_benchmark_statistics.py tests/test_benchmark_spec_data.py tests/test_benchmark_runner_report.py
       - name: Confirm lock files are valid JSON
         run: |
-          python -m json.tool benchmarks/frozen_v2/spec.json >/dev/null
-          python -m json.tool benchmarks/frozen_v2/model_lock.json >/dev/null
-          python -m json.tool benchmarks/frozen_v2/data_lock.json >/dev/null
-          python -m json.tool benchmarks/frozen_v2/preregistration_lock.json >/dev/null
+          python -m json.tool benchmarks/frozen_v3/spec.json >/dev/null
+          python -m json.tool benchmarks/frozen_v3/model_lock.json >/dev/null
+          python -m json.tool benchmarks/frozen_v3/data_lock.json >/dev/null
+          python -m json.tool benchmarks/frozen_v3/preregistration_lock.json >/dev/null
       - name: Verify prospective seal
         run: python scripts/benchmark.py status

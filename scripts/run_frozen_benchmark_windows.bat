@@ -45,19 +45,19 @@ echo Step 4 of 7: Freezing the protocol lock...
 if errorlevel 1 goto :failed
 
 echo Step 5 of 7: Running or resuming matched forecasts...
-.venv-benchmark\Scripts\python.exe scripts\benchmark.py run --models marketforge-naive,marketforge-ensemble,kronos-base
+.venv-benchmark\Scripts\python.exe scripts\benchmark.py run --models marketforge-naive,marketforge-ensemble,marketforge-regime-ensemble,kronos-base
 if errorlevel 1 goto :failed
 
 echo Step 6 of 7: Replaying every forecast for deterministic verification...
-.venv-benchmark\Scripts\python.exe scripts\benchmark.py verify-results --models marketforge-naive,marketforge-ensemble,kronos-base
+.venv-benchmark\Scripts\python.exe scripts\benchmark.py verify-results --models marketforge-naive,marketforge-ensemble,marketforge-regime-ensemble,kronos-base
 if errorlevel 1 goto :failed
 
 echo Step 7 of 7: Building the statistical report...
-.venv-benchmark\Scripts\python.exe scripts\benchmark.py report --candidate marketforge-ensemble --comparator kronos-base
+.venv-benchmark\Scripts\python.exe scripts\benchmark.py report --candidate marketforge-regime-ensemble --comparator kronos-base
 if errorlevel 1 goto :failed
 
 echo.
-echo Finished. Open benchmarks\frozen_v2\results\benchmark_report.md
+echo Finished. Open benchmarks\frozen_v3\results\benchmark_report.md
 pause
 exit /b 0
 

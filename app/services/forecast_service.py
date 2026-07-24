@@ -12,7 +12,9 @@ import pandas as pd
 from app.core.config import KRONOS_DIR
 from app.core.errors import ForecastError
 from app.core.schemas import ForecastSettings
+from app.services.calibration_service import calibrate_forecast_intervals
 from app.services.data_service import infer_step, rows_for_json
+from app.services.regime_service import classify_market_regime
 
 _EPSILON = np.finfo(float).eps
 _MODEL_CACHE: dict[tuple[str, str, str | None, str | None], "_KronosRuntime"] = {}
@@ -154,31 +156,28 @@ def _paths_from_features(
     paths = settings.paths
     horizon = settings.horizon
 
-    if model == "ensemble":
-        block_count = max(1, paths // 2)
-        drift_count = max(1, paths // 3)
-        naive_count = max(1, paths - block_count - drift_count)
+    if model in {"ensemble", "regime_ensemble"}:
+        if model == "regime_ensemble":
+            regime = classify_market_regime(context, min(settings.lookback, 160))["regime"]
+            if regime.startswith("sideways"):
+                component_models = ("mean_reversion", "naive", "block_bootstrap")
+            elif "high_volatility" in regime or regime == "liquidity_shock":
+                component_models = ("block_bootstrap", "drift", "naive")
+            else:
+                component_models = ("momentum", "drift", "block_bootstrap")
+        else:
+            component_models = ("block_bootstrap", "drift", "naive")
+        counts = [max(1, paths // 2), max(1, paths // 3)]
+        counts.append(max(1, paths - counts[0] - counts[1]))
         parts = [
             _paths_from_features(
                 context,
-                settings.model_copy(update={"paths": block_count, "seed": settings.seed + 11}),
-                "block_bootstrap",
-            ),
-            _paths_from_features(
-                context,
-                settings.model_copy(update={"paths": drift_count, "seed": settings.seed + 29}),
-                "drift",
-            ),
-            _paths_from_features(
-                context,
-                settings.model_copy(update={"paths": naive_count, "seed": settings.seed + 47}),
-                "naive",
-            ),
+                settings.model_copy(update={"paths": counts[index], "seed": settings.seed + 11 + index * 19}),
+                component,
+            )
+            for index, component in enumerate(component_models)
         ]
-        return {
-            key: np.concatenate([part[key] for part in parts], axis=0)
-            for key in parts[0]
-        }
+        return {key: np.concatenate([part[key] for part in parts], axis=0) for key in parts[0]}
 
     history_length = len(historical_returns)
     indices = _sample_block_indices(
@@ -203,6 +202,30 @@ def _paths_from_features(
         shocks = rng.normal(0.0, volatility * 0.35, size=(paths, horizon))
         sampled_gap = sampled_gap * 0.05
         sampled_body = shocks - sampled_gap
+    elif model == "exponential_smoothing":
+        recent = historical_returns[-min(80, len(historical_returns)) :]
+        weights = np.exp(np.linspace(-3.0, 0.0, len(recent)))
+        smoothed = float(np.average(recent, weights=weights))
+        shocks = rng.normal(0.0, volatility * 0.75, size=(paths, horizon))
+        sampled_gap = sampled_gap * 0.10
+        sampled_body = np.clip(smoothed, -0.03, 0.03) + shocks - sampled_gap
+    elif model == "momentum":
+        recent = historical_returns[-min(48, len(historical_returns)) :]
+        weights = np.arange(1, len(recent) + 1, dtype=float)
+        momentum = float(np.average(recent, weights=weights))
+        momentum = float(np.clip(momentum, -0.025, 0.025))
+        decay = np.exp(-np.arange(horizon, dtype=float) / max(horizon / 2.0, 1.0))
+        shocks = rng.normal(0.0, volatility * 0.9, size=(paths, horizon))
+        sampled_gap = sampled_gap * 0.10
+        sampled_body = momentum * decay[None, :] + shocks - sampled_gap
+    elif model == "mean_reversion":
+        close_series = pd.Series(context["close"].to_numpy(dtype=float))
+        anchor = float(close_series.ewm(span=min(60, len(close_series)), adjust=False).mean().iloc[-1])
+        deviation = float(np.log(max(anchor, _EPSILON) / max(float(close_series.iloc[-1]), _EPSILON)))
+        correction = np.clip(deviation / max(horizon, 1), -0.025, 0.025)
+        shocks = rng.normal(0.0, volatility * 0.7, size=(paths, horizon))
+        sampled_gap = sampled_gap * 0.10
+        sampled_body = correction + shocks - sampled_gap
     else:
         raise ForecastError(f"Unknown baseline model: {model}")
 
@@ -287,6 +310,9 @@ def baseline_forecast(df: pd.DataFrame, settings: ForecastSettings) -> ForecastR
     path_values = _paths_from_features(context, settings, settings.baseline_model)
     timestamps = _future_timestamps(context, settings.horizon)
     forecast = _quantile_forecast(path_values, timestamps)
+    forecast, calibration_metadata = calibrate_forecast_intervals(
+        context, forecast, settings.calibration, settings.interval_level
+    )
 
     last_close = float(context["close"].iloc[-1])
     median_close = float(forecast["close"].iloc[-1])
@@ -308,6 +334,8 @@ def baseline_forecast(df: pd.DataFrame, settings: ForecastSettings) -> ForecastR
         "paths": int(path_values["close"].shape[0]),
         "horizon": settings.horizon,
         "baseline_model": settings.baseline_model,
+        "calibration": settings.calibration,
+        "regime": classify_market_regime(context, min(len(context), 160))["regime"],
     }
     notes = [
         "The baseline produces a distribution of possible paths, not one guaranteed future line.",
@@ -326,7 +354,8 @@ def baseline_forecast(df: pd.DataFrame, settings: ForecastSettings) -> ForecastR
             "seed": settings.seed,
             "lookback": len(context),
             "block_size": settings.block_size,
-            "interval": "80% central interval",
+            "interval": f"{settings.interval_level:.0%} central interval",
+            "calibration": calibration_metadata,
             "reproducible": True,
         },
     )

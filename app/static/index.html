@@ -2,46 +2,64 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="MarketForge AI is an evidence-aware market forecasting, validation and walk-forward backtesting studio.">
-  <title>MarketForge AI — Evidence-Aware Market Research</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="MarketForge AI is a local-first forecasting, portfolio simulation and reproducible market research studio.">
+  <title>MarketForge AI — Local-First Market Research</title>
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
+  <a class="skip-link" href="#workspace" data-i18n="skip">Skip to research workspace</a>
   <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
   <header class="topbar">
     <a class="brand" href="/" aria-label="MarketForge AI home"><span class="logo">MF</span><span>MarketForge <b>AI</b></span></a>
-    <div class="status" aria-live="polite"><span id="statusDot" class="dot"></span><span id="statusText">Checking engines…</span></div>
+    <div class="top-actions">
+      <label class="compact-label"><span class="sr-only">Language</span><select id="languageSelect" aria-label="Interface language"><option value="en">English</option><option value="bg">Български</option><option value="es">Español</option></select></label>
+      <button id="contrastButton" class="button ghost compact" type="button" aria-pressed="false">High contrast</button>
+      <div class="status" aria-live="polite"><span id="statusDot" class="dot"></span><span id="statusText">Checking engines…</span></div>
+    </div>
   </header>
 
   <main>
     <section class="hero">
       <div>
-        <p class="eyebrow">EVIDENCE-AWARE MARKET RESEARCH</p>
-        <h1>Forecast scenarios.<br><span>Test ideas without fooling yourself.</span></h1>
-        <p class="lead">Clean candle data, compare transparent forecasting baselines, inspect uncertainty and run chronological tests that enter after the signal—not at a price that was already used to create it.</p>
+        <p class="eyebrow" data-i18n="eyebrow">LOCAL-FIRST MARKET RESEARCH</p>
+        <h1 data-i18n="heroTitle">Forecast, compare and stress-test.<br><span>Keep the evidence attached.</span></h1>
+        <p class="lead" data-i18n="heroLead">Import exchange candles or private CSV files, evaluate uncertainty, simulate portfolios, classify regimes and preserve reproducible experiments.</p>
         <div class="hero-actions">
-          <label class="button primary" for="fileInput">Choose CSV</label>
-          <a class="button secondary" href="/api/sample">Download sample</a>
-          <a class="button secondary" href="/docs">Open API docs</a>
+          <label class="button primary" for="fileInput" data-i18n="chooseCsv">Choose CSV</label>
+          <a class="button secondary" href="/api/sample" data-i18n="sample">Download sample</a>
+          <a class="button secondary" href="/docs">API docs</a>
         </div>
       </div>
-      <aside class="hero-card" aria-label="Research integrity summary">
-        <p class="eyebrow">RESEARCH GUARDRAILS</p>
+      <aside class="hero-card" aria-label="Version 0.5 capabilities">
+        <p class="eyebrow">VERSION 0.5 RESEARCH LAB</p>
         <ol>
-          <li>Chronological forecasts only</li>
-          <li>Next-open simulated entry</li>
-          <li>No overlapping capital by default</li>
-          <li>No hidden model fallback</li>
-          <li>Unverified training cut-offs are disclosed</li>
+          <li>Public exchange imports</li>
+          <li>Eight transparent models</li>
+          <li>Multi-asset allocation</li>
+          <li>Regime and volatility tools</li>
+          <li>Saved projects and experiments</li>
+          <li>External benchmark replication</li>
         </ol>
-        <div class="hero-stat"><small>RELEASE</small><strong>0.4.0 Final Audit</strong></div>
+        <div class="hero-stat"><small>RELEASE</small><strong>0.5.0 Expansion</strong></div>
       </aside>
+    </section>
+
+    <section class="import-panel panel" aria-labelledby="importTitle">
+      <div class="panel-heading"><div><p class="eyebrow">DATA CONNECTORS</p><h2 id="importTitle">Import public exchange candles</h2></div><span class="badge good">No API key</span></div>
+      <div class="connector-grid">
+        <label>Exchange<select id="exchange"><option value="binance">Binance Spot</option><option value="coinbase">Coinbase Exchange</option><option value="kraken">Kraken Spot</option></select></label>
+        <label>Symbol<input id="exchangeSymbol" value="BTCUSDT" maxlength="30"></label>
+        <label>Interval<select id="exchangeInterval"><option>1m</option><option>5m</option><option>15m</option><option>30m</option><option selected>1h</option><option>4h</option><option>1d</option><option>1w</option></select></label>
+        <label>Candles<input id="exchangeLimit" type="number" min="40" max="1000" value="500"></label>
+        <button id="importButton" class="button primary" type="button">Import into studio</button>
+      </div>
+      <p id="connectorNote" class="subtle">Public endpoints are read-only. Provider availability and regional access can vary.</p>
     </section>
 
     <section class="workspace" id="workspace">
       <aside class="panel controls">
-        <div class="panel-heading"><div><p class="eyebrow">01 / INPUTS</p><h2>Research setup</h2></div></div>
+        <div class="panel-heading"><div><p class="eyebrow">01 / INPUTS</p><h2 data-i18n="setup">Research setup</h2></div></div>
 
         <input id="fileInput" type="file" accept=".csv,text/csv" hidden>
         <button id="dropZone" class="drop-zone" type="button" aria-describedby="fileHelp">
@@ -50,113 +68,92 @@
           <small id="fileHelp">OHLC required · timestamp and volume recommended · max 15 MB</small>
         </button>
 
-        <div class="tabs" role="tablist" aria-label="Research mode">
+        <div class="tabs four" role="tablist" aria-label="Research mode">
           <button class="tab active" data-tab="forecast" type="button" role="tab" aria-selected="true">Forecast</button>
           <button class="tab" data-tab="backtest" type="button" role="tab" aria-selected="false">Backtest</button>
+          <button class="tab" data-tab="portfolio" type="button" role="tab" aria-selected="false">Portfolio</button>
+          <button class="tab" data-tab="lab" type="button" role="tab" aria-selected="false">Research Lab</button>
         </div>
 
-        <div id="forecastControls" class="control-group">
-          <label>Forecast engine
-            <select id="engine">
-              <option value="auto">Auto — Kronos with visible fallback</option>
-              <option value="baseline">Transparent baseline</option>
-              <option value="kronos">Kronos only</option>
-            </select>
-          </label>
-          <label>Baseline model
-            <select id="baselineModel">
-              <option value="ensemble" selected>Ensemble — recommended</option>
-              <option value="block_bootstrap">Moving-block bootstrap</option>
-              <option value="drift">Robust drift</option>
-              <option value="naive">Near-persistence</option>
-            </select>
-          </label>
-          <label>Kronos model
-            <select id="modelSize">
-              <option value="mini">Mini — lightest, 2,048 context</option>
-              <option value="small" selected>Small — balanced, 512 context</option>
-              <option value="base">Base — heavier, 512 context</option>
-            </select>
-          </label>
-          <div class="two-col">
-            <label>Future candles<input id="horizon" type="number" min="1" max="240" value="24"></label>
-            <label>History candles<input id="lookback" type="number" min="40" max="2048" value="256"></label>
-          </div>
-          <div class="two-col">
-            <label>Block size<input id="blockSize" type="number" min="1" max="64" value="8"></label>
-            <label>Kronos draws<input id="kronosSamples" type="number" min="1" max="8" value="4"></label>
-          </div>
+        <div id="forecastControls" class="control-group mode-controls">
+          <label>Forecast engine<select id="engine"><option value="auto">Auto — Kronos with visible fallback</option><option value="baseline">Transparent baseline</option><option value="kronos">Kronos only</option></select></label>
+          <label>Baseline model<select id="baselineModel">
+            <option value="regime_ensemble" selected>Regime ensemble — recommended</option><option value="ensemble">General ensemble</option><option value="block_bootstrap">Moving-block bootstrap</option><option value="exponential_smoothing">Exponential smoothing</option><option value="momentum">Momentum</option><option value="mean_reversion">Mean reversion</option><option value="drift">Robust drift</option><option value="naive">Near-persistence</option>
+          </select></label>
+          <label>Interval calibration<select id="calibration"><option value="empirical">Empirical blend</option><option value="conformal">Widen-only conformal</option><option value="none">None</option></select></label>
+          <label>Kronos model<select id="modelSize"><option value="mini">Mini</option><option value="small" selected>Small</option><option value="base">Base</option></select></label>
+          <div class="two-col"><label>Future candles<input id="horizon" type="number" min="1" max="240" value="24"></label><label>History candles<input id="lookback" type="number" min="40" max="2048" value="256"></label></div>
+          <div class="two-col"><label>Block size<input id="blockSize" type="number" min="1" max="64" value="8"></label><label>Kronos draws<input id="kronosSamples" type="number" min="1" max="16" value="4"></label></div>
           <label>Baseline paths <span id="pathsValue">200</span><input id="paths" type="range" min="20" max="1000" step="20" value="200"></label>
           <button id="forecastButton" class="button primary full" type="button">Generate forecast</button>
         </div>
 
-        <div id="backtestControls" class="control-group hidden">
-          <label>Forecast model
-            <select id="btModel">
-              <option value="ensemble" selected>Ensemble — recommended</option>
-              <option value="block_bootstrap">Moving-block bootstrap</option>
-              <option value="drift">Robust drift</option>
-              <option value="naive">Near-persistence</option>
-            </select>
-          </label>
-          <div class="two-col">
-            <label>Forecast horizon<input id="btHorizon" type="number" min="1" max="120" value="12"></label>
-            <label>History candles<input id="btLookback" type="number" min="40" max="1024" value="160"></label>
-          </div>
-          <div class="two-col">
-            <label>Test every N candles<input id="btStep" type="number" min="1" max="120" value="12"></label>
-            <label>Block size<input id="btBlockSize" type="number" min="1" max="64" value="8"></label>
-          </div>
+        <div id="backtestControls" class="control-group mode-controls hidden">
+          <label>Forecast model<select id="btModel"><option value="regime_ensemble" selected>Regime ensemble</option><option value="ensemble">General ensemble</option><option value="block_bootstrap">Moving-block bootstrap</option><option value="exponential_smoothing">Exponential smoothing</option><option value="momentum">Momentum</option><option value="mean_reversion">Mean reversion</option><option value="drift">Robust drift</option><option value="naive">Near-persistence</option></select></label>
+          <div class="two-col"><label>Forecast horizon<input id="btHorizon" type="number" min="1" max="120" value="12"></label><label>History candles<input id="btLookback" type="number" min="40" max="1024" value="160"></label></div>
+          <div class="two-col"><label>Test every N candles<input id="btStep" type="number" min="1" max="120" value="12"></label><label>Block size<input id="btBlockSize" type="number" min="1" max="64" value="8"></label></div>
           <label>Trade threshold (%)<input id="threshold" type="number" min="0" max="25" step="0.05" value="0.25"></label>
           <label>Trade direction<select id="direction"><option value="long_short">Long and short</option><option value="long_only">Long only</option><option value="short_only">Short only</option></select></label>
-          <div class="two-col">
-            <label>Fee each side (%)<input id="fee" type="number" min="0" max="5" step="0.01" value="0.10"></label>
-            <label>Slippage each side (%)<input id="slippage" type="number" min="0" max="5" step="0.01" value="0.05"></label>
-          </div>
-          <div class="two-col">
-            <label>Position size (%)<input id="positionSize" type="number" min="1" max="100" step="1" value="100"></label>
-            <label>Execution delay<input id="executionDelay" type="number" min="1" max="5" value="1"></label>
-          </div>
-          <div class="two-col">
-            <label>Stop loss % (optional)<input id="stopLoss" type="number" min="0.01" max="50" step="0.1" placeholder="None"></label>
-            <label>Take profit % (optional)<input id="takeProfit" type="number" min="0.01" max="100" step="0.1" placeholder="None"></label>
-          </div>
-          <label class="checkbox-row"><input id="allowOverlap" type="checkbox"><span>Allow overlapping positions (advanced and easier to misuse)</span></label>
+          <div class="two-col"><label>Fee each side (%)<input id="fee" type="number" min="0" max="5" step="0.01" value="0.10"></label><label>Slippage each side (%)<input id="slippage" type="number" min="0" max="5" step="0.01" value="0.05"></label></div>
+          <div class="two-col"><label>Position size (%)<input id="positionSize" type="number" min="1" max="100" value="100"></label><label>Execution delay<input id="executionDelay" type="number" min="1" max="5" value="1"></label></div>
+          <div class="two-col"><label>Stop loss %<input id="stopLoss" type="number" min="0.01" max="50" step="0.1" placeholder="None"></label><label>Take profit %<input id="takeProfit" type="number" min="0.01" max="100" step="0.1" placeholder="None"></label></div>
+          <label class="checkbox-row"><input id="allowOverlap" type="checkbox"><span>Allow overlapping positions</span></label>
           <button id="backtestButton" class="button primary full" type="button">Run walk-forward test</button>
+        </div>
+
+        <div id="portfolioControls" class="control-group mode-controls hidden">
+          <input id="portfolioFiles" type="file" accept=".csv,text/csv" multiple>
+          <p class="subtle">Select 2–20 CSV files. Assets are matched by timestamp.</p>
+          <label>Allocation method<select id="allocation"><option value="inverse_volatility" selected>Inverse volatility</option><option value="risk_parity">Risk parity</option><option value="minimum_variance">Minimum variance</option><option value="equal">Equal weight</option></select></label>
+          <div class="two-col"><label>Lookback<input id="portfolioLookback" type="number" min="20" max="2000" value="120"></label><label>Rebalance every<input id="rebalanceEvery" type="number" min="1" max="10000" value="24"></label></div>
+          <div class="two-col"><label>Maximum weight %<input id="maxWeight" type="number" min="1" max="100" value="60"></label><label>Fee %<input id="portfolioFee" type="number" min="0" max="5" step="0.01" value="0.10"></label></div>
+          <button id="multiAssetButton" class="button secondary full" type="button">Analyse correlations</button>
+          <button id="portfolioButton" class="button primary full" type="button">Simulate portfolio</button>
+        </div>
+
+        <div id="labControls" class="control-group mode-controls hidden">
+          <p class="subtle">The Research Lab uses the currently selected single CSV.</p>
+          <button id="regimeButton" class="button secondary full" type="button">Classify market regime</button>
+          <label>Volatility method<select id="volMethod"><option value="ensemble">Estimator ensemble</option><option value="ewma">EWMA</option><option value="parkinson">Parkinson</option><option value="garman_klass">Garman–Klass</option></select></label>
+          <div class="two-col"><label>Volatility horizon<input id="volHorizon" type="number" min="1" max="240" value="24"></label><label>Lookback<input id="volLookback" type="number" min="20" max="2048" value="120"></label></div>
+          <button id="volatilityButton" class="button secondary full" type="button">Forecast volatility</button>
+          <div class="control-section"><h3>Scenario stress test</h3><div class="two-col"><label>Price shock %<input id="shock" type="number" min="-95" max="500" value="-10"></label><label>Vol multiplier<input id="volMultiplier" type="number" min="0.1" max="10" step="0.1" value="2"></label></div><label>Liquidity cost %<input id="liquidityCost" type="number" min="0" max="20" step="0.05" value="0.25"></label><button id="stressButton" class="button primary full" type="button">Run stress scenarios</button></div>
+        </div>
+
+        <div class="control-section project-tools">
+          <h3>Projects and evidence</h3>
+          <label>Project name<input id="projectName" maxlength="120" placeholder="My research project"></label>
+          <div class="two-col"><button id="saveProjectButton" class="button secondary" type="button">Save project</button><button id="projectsButton" class="button secondary" type="button">Show projects</button></div><div class="two-col"><button id="saveExperimentButton" class="button secondary" type="button">Save result</button><button id="experimentsButton" class="button secondary" type="button">Recent experiments</button></div>
+          <label>Report template<select id="reportTemplate"><option value="research">Research report</option><option value="executive">Executive summary</option><option value="risk">Risk report</option><option value="model_card">Model card</option></select></label>
+          <button id="reportButton" class="button ghost full" type="button">Download report</button>
+          <button id="modelsButton" class="button ghost full" type="button">Show model registry</button>
         </div>
       </aside>
 
       <section class="panel results" aria-live="polite">
-        <div class="panel-heading">
-          <div><p class="eyebrow">02 / RESULTS</p><h2 id="resultsTitle">Ready when you are</h2></div>
-          <button id="exportButton" class="button ghost hidden" type="button">Export JSON</button>
-        </div>
-        <div id="integrityBanner" class="integrity-banner">Kronos historical results must not be called clean out-of-sample until its model training cut-off is independently verified.</div>
-        <div id="emptyState" class="empty-state">
-          <div class="orb"><span></span></div>
-          <h3>Your evidence panel will appear here</h3>
-          <p>Start with the sample file or upload OHLCV candle data.</p>
-        </div>
-        <div id="loadingState" class="empty-state hidden"><div class="spinner"></div><h3>Running the research…</h3><p>Kronos can take much longer than the transparent baseline.</p></div>
+        <div class="panel-heading"><div><p class="eyebrow">02 / RESULTS</p><h2 id="resultsTitle">Ready when you are</h2></div><div class="result-actions"><button id="exportButton" class="button ghost hidden" type="button">Export JSON</button></div></div>
+        <div id="integrityBanner" class="integrity-banner"><span class="integrity-icon">!</span><div><strong>Evidence warning</strong><p>Kronos historical results must not be called clean out-of-sample until its model training cut-off is independently verified.</p></div></div>
+        <div id="emptyState" class="empty-state"><div class="orb"><span></span></div><h3>Your evidence panel will appear here</h3><p>Import public candles, use the sample file or upload your own OHLCV data.</p></div>
+        <div id="loadingState" class="empty-state hidden"><div class="spinner"></div><h3>Running the research…</h3><p>Large portfolios and Kronos forecasts can take longer.</p></div>
         <div id="errorBox" class="error-box hidden" role="alert"></div>
         <div id="fallbackBox" class="fallback-box hidden"></div>
         <div id="resultContent" class="hidden">
           <div id="metrics" class="metrics"></div>
-          <canvas id="chart" height="390" aria-label="Forecast or equity chart"></canvas>
-          <div class="result-grid">
-            <div><h3>Data quality</h3><div id="dataReport" class="report-list"></div></div>
-            <div><h3>Evidence notes</h3><div id="notes" class="report-list"></div></div>
-          </div>
+          <div class="chart-toolbar" aria-label="Chart controls"><label>Visible points<select id="chartRange"><option value="100">100</option><option value="250" selected>250</option><option value="500">500</option><option value="all">All</option></select></label><button id="tableButton" class="button ghost compact" type="button" aria-expanded="false">Show data table</button></div>
+          <canvas id="chart" height="390" aria-label="MarketForge result chart"></canvas>
+          <div id="accessibleChart" class="table-wrap hidden" tabindex="0"></div>
+          <div class="result-grid"><div><h3>Data quality</h3><div id="dataReport" class="report-list"></div></div><div><h3>Evidence notes</h3><div id="notes" class="report-list"></div></div></div>
           <div id="forecastEvidence" class="evidence-card hidden"><h3>Forecast evidence</h3><div id="forecastMetrics" class="metrics compact"></div></div>
+          <div id="detailWrap" class="evidence-card hidden"><h3 id="detailTitle">Research detail</h3><div id="detailContent" class="report-list"></div></div>
           <div id="tradesWrap" class="hidden"><h3>Latest simulated trades</h3><div class="table-wrap"><table><thead><tr><th>Signal</th><th>Entry</th><th>Side</th><th>Exit reason</th><th>Predicted</th><th>Trade result</th><th>Equity</th></tr></thead><tbody id="tradesBody"></tbody></table></div></div>
         </div>
       </section>
     </section>
 
     <section class="trust-grid">
-      <article><span>✓</span><h3>Honest execution timing</h3><p>Signals use only completed history, then simulated trades enter on a later candle open.</p></article>
-      <article><span>↯</span><h3>Dependency-aware baseline</h3><p>Moving blocks retain short runs of candle shape, return and volume behaviour instead of shuffling every return independently.</p></article>
-      <article><span>⌁</span><h3>Forecasts and trades separated</h3><p>Accuracy includes forecasts that did not trigger trades, reducing selective reporting.</p></article>
+      <article><span>⇩</span><h3>Direct market imports</h3><p>Read-only public connectors create a normal CSV inside the studio, so imported data follows the same validation path as uploaded files.</p></article>
+      <article><span>◎</span><h3>Multi-asset research</h3><p>Compare correlations, volatility and returns, then test equal-weight, inverse-volatility, risk-parity or minimum-variance allocation.</p></article>
+      <article><span>⌁</span><h3>Evidence stays attached</h3><p>Save projects, experiment hashes, settings, metrics and downloadable research, risk or model-card reports.</p></article>
     </section>
   </main>
 

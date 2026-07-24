@@ -26,7 +26,7 @@ from app.benchmark.spec import (
     write_json,
 )
 
-DEFAULT_ROOT = PROJECT_ROOT / "benchmarks" / "frozen_v2"
+DEFAULT_ROOT = PROJECT_ROOT / "benchmarks" / "frozen_v3"
 
 
 def git_state() -> tuple[str | None, bool | None]:
@@ -208,12 +208,12 @@ def main() -> None:
     sub.add_parser("verify-environment", help="Record and verify the exact frozen execution environment")
     sub.add_parser("lock-protocol", help="Freeze spec, model, data, environment and Git state")
     run = sub.add_parser("run", help="Run or resume the matched benchmark")
-    run.add_argument("--models", default="marketforge-naive,marketforge-ensemble,kronos-base")
+    run.add_argument("--models", default="marketforge-naive,marketforge-ensemble,marketforge-regime-ensemble,kronos-base")
     run.add_argument("--max-origins", type=int)
     replay = sub.add_parser("verify-results", help="Replay every forecast and compare deterministic evidence")
-    replay.add_argument("--models", default="marketforge-naive,marketforge-ensemble,kronos-base")
+    replay.add_argument("--models", default="marketforge-naive,marketforge-ensemble,marketforge-regime-ensemble,kronos-base")
     report = sub.add_parser("report", help="Create statistical report and claim-gate decision")
-    report.add_argument("--candidate", default="marketforge-ensemble")
+    report.add_argument("--candidate", default="marketforge-regime-ensemble")
     report.add_argument("--comparator", default="kronos-base")
 
     args = parser.parse_args()

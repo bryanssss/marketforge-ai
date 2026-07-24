@@ -69,6 +69,8 @@ def _model_settings(
         paths=int(evaluation["paths"]),
         block_size=int(evaluation["block_size"]),
         seed=seed,
+        calibration=str(evaluation.get("calibration", "none")),
+        interval_level=float(evaluation.get("interval_level", 0.80)),
     )
     if name.startswith("marketforge-"):
         baseline = name.removeprefix("marketforge-").replace("-", "_")

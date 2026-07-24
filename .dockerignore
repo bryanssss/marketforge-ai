@@ -15,3 +15,7 @@ vendor/Kronos
 *.safetensors
 .env
 .DS_Store
+storage/
+build/
+dist/
+.venv-desktop/

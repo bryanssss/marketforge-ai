@@ -112,9 +112,9 @@ class FrozenSpec:
         if origin_hour < 0 or origin_hour > 23 or int(evaluation.get("origin_frequency_hours", 0)) < 1:
             raise BenchmarkSpecError("An explicit UTC origin hour and positive origin frequency are required.")
         if execution.get("device") != "cpu" or execution.get("deterministic_algorithms") is not True:
-            raise BenchmarkSpecError("Frozen v2 requires deterministic CPU execution.")
+            raise BenchmarkSpecError("The frozen protocol requires deterministic CPU execution.")
         if int(execution.get("thread_count", 0)) != 1:
-            raise BenchmarkSpecError("Frozen v2 requires a single numerical thread.")
+            raise BenchmarkSpecError("The frozen protocol requires a single numerical thread.")
         if not execution.get("python_major_minor") or not execution.get("required_packages"):
             raise BenchmarkSpecError("Execution environment versions must be frozen.")
         if not models or evaluation.get("candidate") not in models:

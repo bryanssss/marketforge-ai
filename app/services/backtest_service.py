@@ -108,6 +108,63 @@ def _profit_factor(returns: np.ndarray) -> float:
     return float(wins.sum() / abs(losses.sum()))
 
 
+
+
+def _longest_streak(values: np.ndarray, positive: bool) -> int:
+    longest = 0
+    current = 0
+    for value in values:
+        matched = value > 0 if positive else value < 0
+        current = current + 1 if matched else 0
+        longest = max(longest, current)
+    return longest
+
+
+def _expanded_diagnostics(returns: np.ndarray, equity_values: list[float]) -> dict[str, float | int]:
+    if not len(returns):
+        return {
+            "trade_var_95_percent": 0.0,
+            "trade_expected_shortfall_95_percent": 0.0,
+            "ulcer_index_percent": 0.0,
+            "recovery_factor": 0.0,
+            "omega_ratio": 0.0,
+            "return_skewness": 0.0,
+            "return_excess_kurtosis": 0.0,
+            "longest_win_streak": 0,
+            "longest_loss_streak": 0,
+        }
+    values = np.asarray(equity_values, dtype=float)
+    running = np.maximum.accumulate(values)
+    drawdowns = values / np.maximum(running, np.finfo(float).eps) - 1.0
+    ulcer = float(np.sqrt(np.mean(drawdowns**2)))
+    max_dd = abs(float(drawdowns.min()))
+    total_return = float(values[-1] / max(values[0], np.finfo(float).eps) - 1.0)
+    threshold = 0.0
+    gains = float(np.sum(np.maximum(returns - threshold, 0.0)))
+    losses = float(np.sum(np.maximum(threshold - returns, 0.0)))
+    mean = float(np.mean(returns))
+    standard = float(np.std(returns, ddof=1)) if len(returns) > 1 else 0.0
+    if standard > 0:
+        centred = (returns - mean) / standard
+        skew = float(np.mean(centred**3))
+        kurtosis = float(np.mean(centred**4) - 3.0)
+    else:
+        skew = 0.0
+        kurtosis = 0.0
+    quantile = float(np.quantile(returns, 0.05))
+    tail = returns[returns <= quantile]
+    return {
+        "trade_var_95_percent": round(-quantile * 100.0, 4),
+        "trade_expected_shortfall_95_percent": round(float(-np.mean(tail) * 100.0), 4),
+        "ulcer_index_percent": round(ulcer * 100.0, 4),
+        "recovery_factor": round(total_return / max_dd, 4) if max_dd > 0 else 0.0,
+        "omega_ratio": round(gains / losses, 4) if losses > 0 else 0.0,
+        "return_skewness": round(skew, 4),
+        "return_excess_kurtosis": round(kurtosis, 4),
+        "longest_win_streak": _longest_streak(returns, True),
+        "longest_loss_streak": _longest_streak(returns, False),
+    }
+
 def _forecast_metrics(records: list[dict[str, float]]) -> dict[str, float | int]:
     if not records:
         return {
@@ -170,6 +227,7 @@ def run_walk_forward_backtest(df: pd.DataFrame, settings: BacktestSettings) -> d
             paths=settings.paths,
             block_size=settings.block_size,
             seed=settings.seed + history_end,
+            calibration=settings.calibration,
         )
         try:
             result = baseline_forecast(history, forecast_settings)
@@ -307,6 +365,7 @@ def run_walk_forward_backtest(df: pd.DataFrame, settings: BacktestSettings) -> d
         "position_size_percent": settings.position_size_percent,
         "overlapping_positions": settings.allow_overlap,
     }
+    metrics.update(_expanded_diagnostics(returns, equity_values))
     exit_counts: dict[str, int] = {}
     for trade in trades:
         exit_counts[trade["exit_reason"]] = exit_counts.get(trade["exit_reason"], 0) + 1

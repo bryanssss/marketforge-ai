@@ -1,0 +1,13 @@
+{
+  "benchmark_id": "marketforge-prospective-v3",
+  "code_sha256": "8b76f5603ec8b07ce08685071c8967b6762a5ca95855491f746f02a524099f42",
+  "created_at": "2026-07-24T13:28:26.654640+00:00",
+  "frozen_at": "2026-07-24T13:28:00Z",
+  "git_commit": null,
+  "git_dirty": null,
+  "model_lock_sha256": "ba26cea8bbecca85d71e74d5d6ee051b4ff64e4b695ed2abca783eeefa10fbe8",
+  "preregistration_sha256": "b841c2da649ee9e1b575121112dfaaba1e0f5630d21f028a6ad730e2a0c3a4d9",
+  "rule": "Changing a bound hash requires a new benchmark identifier; this lock must not be overwritten.",
+  "spec_sha256": "fb15f09fcfcb852e9e5b1d1a8eca83ee16c26a352173ed5b87a88907b40a1d34",
+  "status": "preregistered"
+}

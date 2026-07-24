@@ -2,7 +2,7 @@
 
 Version 1 was superseded on 24 July 2026, before the first scored candle existed. Its `device: auto` rule did not guarantee comparable execution across CPU, CUDA and Apple MPS.
 
-No v1 result should be generated or published. The official protocol is `benchmarks/frozen_v2`.
+No v1 result should be generated or published. The current official protocol is `benchmarks/frozen_v3`. Version 2 remains the published MarketForge AI 0.4 audit record.
 
 For audit history, `frozen_source/` preserves the exact source tree bound by the original v1 seal. Its legacy code hash is:
 

@@ -26,3 +26,14 @@ benchmarks/frozen_v2/data/canonical/
 benchmarks/frozen_v2/model_cache/
 benchmarks/frozen_v2/results/*
 !benchmarks/frozen_v2/results/.gitkeep
+.venv-desktop/
+storage/
+build/
+dist/
+*.spec.bak
+
+benchmarks/frozen_v3/data/archives/
+benchmarks/frozen_v3/data/canonical/
+benchmarks/frozen_v3/model_cache/
+benchmarks/frozen_v3/results/*
+!benchmarks/frozen_v3/results/.gitkeep

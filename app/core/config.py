@@ -38,7 +38,7 @@ def _env_int(name: str, default: int) -> int:
 @dataclass(frozen=True)
 class Settings:
     app_name: str = "MarketForge AI"
-    app_version: str = "0.4.0"
+    app_version: str = "0.5.0"
     environment: str = os.getenv("MARKETFORGE_ENV", "local")
     host: str = os.getenv("MARKETFORGE_HOST", "127.0.0.1")
     port: int = _env_int("MARKETFORGE_PORT", 7070)

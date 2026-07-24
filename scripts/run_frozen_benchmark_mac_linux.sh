@@ -20,8 +20,8 @@ fi
 .venv-benchmark/bin/python scripts/benchmark.py verify-models --download-weights
 .venv-benchmark/bin/python scripts/benchmark.py verify-environment
 .venv-benchmark/bin/python scripts/benchmark.py lock-protocol
-.venv-benchmark/bin/python scripts/benchmark.py run --models marketforge-naive,marketforge-ensemble,kronos-base
-.venv-benchmark/bin/python scripts/benchmark.py verify-results --models marketforge-naive,marketforge-ensemble,kronos-base
-.venv-benchmark/bin/python scripts/benchmark.py report --candidate marketforge-ensemble --comparator kronos-base
+.venv-benchmark/bin/python scripts/benchmark.py run --models marketforge-naive,marketforge-ensemble,marketforge-regime-ensemble,kronos-base
+.venv-benchmark/bin/python scripts/benchmark.py verify-results --models marketforge-naive,marketforge-ensemble,marketforge-regime-ensemble,kronos-base
+.venv-benchmark/bin/python scripts/benchmark.py report --candidate marketforge-regime-ensemble --comparator kronos-base
 
-echo "Finished. Open benchmarks/frozen_v2/results/benchmark_report.md"
+echo "Finished. Open benchmarks/frozen_v3/results/benchmark_report.md"

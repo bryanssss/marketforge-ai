@@ -1,5 +1,49 @@
 # Changelog
 
+## 0.5.0 — 2026-07-24 — Research workbench expansion
+
+### Added
+
+- Read-only public candle connectors for Binance Spot, Coinbase Exchange and Kraken Spot.
+- Direct exchange-data import in the browser interface.
+- Exponential-smoothing, momentum, mean-reversion and regime-aware ensemble models.
+- Empirical and widen-only conformal forecast-interval calibration.
+- Market-regime classification and volatility forecasting.
+- Scenario stress testing with VaR and expected-shortfall summaries.
+- Multi-asset correlation analysis and portfolio simulation.
+- Equal-weight, inverse-volatility, risk-parity and minimum-variance allocation.
+- Local saved projects, experiment tracking and model registry using SQLite.
+- Executive, research, risk and model-card reports.
+- External benchmark-replication ledger analyser and command-line tool.
+- Optional PyWebView/PyInstaller desktop packaging.
+- English, Bulgarian and Spanish interface foundations.
+- High-contrast, reduced-motion and accessible chart-table support.
+- Expanded backtest diagnostics including trade VaR, expected shortfall, ulcer index, recovery factor, Omega ratio, skewness, kurtosis and streaks.
+- Prospective Frozen Benchmark v3 for the v0.5 regime-aware candidate.
+
+### Changed
+
+- The recommended transparent model is now `regime_ensemble`.
+- The benchmark command defaults to `benchmarks/frozen_v3`.
+- Benchmark v2 remains preserved as the public v0.4 audit record.
+- The browser interface now includes Forecast, Backtest, Portfolio and Research Lab modes.
+
+### Verification
+
+- 57 automated tests pass.
+- Application coverage remains above the required 78% threshold.
+- Python compilation and browser JavaScript syntax checks pass.
+- Prospective v3 preregistration verifies and data collection remains blocked until 3 November 2026.
+
+## 0.4.1 — 2026-07-24 — GitHub Actions hotfix
+
+- Updated checkout and Python setup actions to Node 24-compatible major versions.
+- Updated CodeQL from v3 to v4.
+- Changed the dependency audit to scan only declared application dependencies instead of the complete runner environment.
+- Limited pull-request audits to relevant application dependency files.
+- Excluded frozen benchmark and Kronos compatibility manifests from automatic Dependabot version changes.
+- Kept the preregistered benchmark v2 source and seal unchanged.
+
 ## 0.4.0 — 2026-07-24 — Final forensic audit
 
 - Superseded prospective v1 before holdout and preregistered deterministic v2.

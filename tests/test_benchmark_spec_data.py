@@ -117,3 +117,12 @@ def test_data_lock_detects_archive_tampering(tmp_path: Path) -> None:
     assert verify_data_lock(tmp_path, lock, spec) == []
     archive.write_bytes(b"tampered")
     assert any("archive hash mismatch" in item for item in verify_data_lock(tmp_path, lock, spec))
+
+
+def test_v3_expansion_benchmark_is_preregistered_before_holdout() -> None:
+    raw = json.loads(Path("benchmarks/frozen_v3/spec.json").read_text())
+    assert raw["benchmark_id"] == "marketforge-prospective-v3"
+    assert raw["evaluation"]["candidate"] == "marketforge-regime-ensemble"
+    assert raw["evaluation"]["calibration"] == "empirical"
+    assert raw["execution"]["device"] == "cpu"
+    assert raw["frozen_at"] < raw["data"]["holdout_start"]
