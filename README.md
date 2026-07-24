@@ -8,6 +8,8 @@
 [![Project Status](https://img.shields.io/badge/Status-Research%20Alpha-orange.svg)](#project-status)
 [![Local First](https://img.shields.io/badge/Privacy-Local--First-6366f1.svg)](#security-and-privacy)
 
+[![Support MarketForge AI](https://img.shields.io/badge/Support%20MarketForge%20AI-Donate%20with%20PayPal-0070ba?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=YE9H5NCNLWU38)
+
 **MarketForge AI** is a local-first financial forecasting, market-data validation, uncertainty analysis and walk-forward backtesting studio.
 
 It provides a polished browser-based interface for importing OHLCV market data, generating probabilistic forecasts, comparing forecasting models, evaluating historical performance and running reproducible financial research workflows.
