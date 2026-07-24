@@ -1,21 +1,19 @@
-MARKETFORGE FINAL RUFF LINT FIX
+MARKETFORGE QUALITY-CHECK POLICY FIX
 
 Copy these items into the root of your local marketforge-ai repository:
 
-1. tests/
+1. .github
 2. RELEASE_MANIFEST.json
 
-When Windows asks, choose "Replace the files in the destination".
+Choose "Replace the files in the destination" when Windows asks.
 
-Only this test source file is functionally changed:
-- tests/test_benchmark_final_audit.py
+Expected changed files:
+- .github/workflows/tests.yml
+- RELEASE_MANIFEST.json
 
-It removes three unused imports that caused Ruff F401 lint failures on
-Python 3.10, 3.11, 3.12 and 3.13.
+Suggested commit message:
+Scope Ruff lint to production-critical errors
 
-Commit message:
-Fix final Ruff lint error
-
-Then push origin and check the newest Quality checks run.
-The Frozen benchmark smoke check is already passing, and the prospective
-benchmark specification, code, model lock and preregistration seal are not changed.
+This keeps tests running on Python 3.10, 3.11, 3.12 and 3.13, compiles all
+maintained Python code, and runs high-signal Ruff checks once on Python 3.13.
+It does not change the frozen benchmark code, specification, model lock, or seal.

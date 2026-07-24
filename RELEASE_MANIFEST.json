@@ -1,7 +1,7 @@
 {
   "project": "MarketForge AI",
   "version": "0.4.0",
-  "generated_at_utc": "2026-07-24T11:45:06.706744+00:00",
+  "generated_at_utc": "2026-07-24T12:03:38.165386+00:00",
   "file_count": 120,
   "files": [
     {
@@ -46,8 +46,8 @@
     },
     {
       "path": ".github/workflows/tests.yml",
-      "bytes": 943,
-      "sha256": "feec19b6654936349b1540affecff744ced465057877e50f846db08b71474864"
+      "bytes": 1018,
+      "sha256": "c45fd89570e5359854277e8bca20ace751f2b00accaef38352d3ca91fb508dbe"
     },
     {
       "path": ".gitignore",
