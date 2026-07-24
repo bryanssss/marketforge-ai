@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import os
+import platform
 from pathlib import Path
 
 import numpy as np
@@ -44,7 +46,7 @@ def _mini_benchmark(tmp_path: Path) -> tuple[Path, object]:
             "holdout_end_exclusive": "2026-01-05T00:00:00Z",
             "data_available_not_before": "2026-01-06T00:00:00Z"
         },
-        "execution": {"device": "cpu", "deterministic_algorithms": True, "thread_count": 1, "python_major_minor": "3.13", "required_packages": {"numpy": __import__("importlib.metadata").metadata.version("numpy")}},
+        "execution": {"device": "cpu", "deterministic_algorithms": True, "thread_count": 1, "python_major_minor": ".".join(platform.python_version_tuple()[:2]), "required_packages": {"numpy": __import__("importlib.metadata").metadata.version("numpy")}},
         "evaluation": {
             "lookback": 40, "horizons": [1], "origin_frequency_hours": 24, "origin_hour_utc": 0, "paths": 20, "block_size": 4,
             "seeds": [1], "kronos_draws": 1, "temperature": 1.0, "top_p": 0.9,
@@ -91,11 +93,15 @@ def _mini_benchmark(tmp_path: Path) -> tuple[Path, object]:
     }
     model_verification = {"all_verified": True, "results": [{"status": "verified"}]}
     from app.benchmark.environment import build_environment_verification
-    import os
-    import torch
+
     for name in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
         os.environ[name] = "1"
-    torch.set_num_threads(1)
+    try:
+        import torch
+    except ImportError:
+        pass
+    else:
+        torch.set_num_threads(1)
     environment_verification = build_environment_verification(load_spec(root / "spec.json"))
     write_json(root / "model_lock.json", model_lock)
     write_json(root / "data_lock.json", data_lock)

@@ -1,12 +1,24 @@
-MARKETFORGE GITHUB ACTIONS HOTFIX
+MARKETFORGE CI FINAL FIX
+========================
 
+This patch fixes the two remaining GitHub Actions failures:
+
+1. Quality checks / Lint
+   - Corrects import grouping in tests/test_benchmark_final_audit.py.
+
+2. Frozen benchmark smoke checks
+   - Removes the hard-coded Python 3.13 assumption from the portable smoke test.
+   - Makes PyTorch optional in the lightweight smoke test, because the smoke workflow
+     intentionally does not install the large Kronos/PyTorch environment.
+
+HOW TO APPLY
+------------
 1. Extract this ZIP.
-2. Copy the .github folder and RELEASE_MANIFEST.json into your local marketforge-ai repository.
-3. Allow Windows to replace the existing files.
-4. Open GitHub Desktop.
-5. Commit with: Fix GitHub Actions dependency audit
-6. Push origin.
-7. On GitHub, close pull requests #3 and #5 through #9 without merging.
-8. Pull requests #1, #2 and #4 should become obsolete because this hotfix already applies those action upgrades.
+2. Copy the tests folder and RELEASE_MANIFEST.json into your local marketforge-ai folder.
+3. Choose Replace files in the destination.
+4. In GitHub Desktop commit with:
+   Fix CI lint and benchmark smoke tests
+5. Click Push origin.
 
-This patch does not change the frozen benchmark v2 source or preregistration seal.
+This patch does not change the frozen benchmark implementation, model lock, specification,
+or preregistration seal. It only fixes test portability and style.

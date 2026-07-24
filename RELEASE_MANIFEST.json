@@ -1,7 +1,7 @@
 {
   "project": "MarketForge AI",
   "version": "0.4.0",
-  "generated_at_utc": "2026-07-24T10:57:57.288176+00:00",
+  "generated_at_utc": "2026-07-24T11:17:42.004291+00:00",
   "file_count": 120,
   "files": [
     {
@@ -561,13 +561,13 @@
     },
     {
       "path": "tests/test_benchmark_final_audit.py",
-      "bytes": 1006,
-      "sha256": "8b89cd5423286d6753e510d76de4387c475fb6779d3c13b2bfb2d53f93bdfb1b"
+      "bytes": 1009,
+      "sha256": "8e855ab630d8b3efb8fc7ac5cbee0334d9847e093331073c91f30d8e2fa3b600"
     },
     {
       "path": "tests/test_benchmark_runner_report.py",
-      "bytes": 7748,
-      "sha256": "a9b13869da7cfa1349b3a8a3a36b7c73a5ff36f6488fa488c6a8be89b91787d3"
+      "bytes": 7864,
+      "sha256": "0beb236396a0bb3b4fff662b6129d017465f2bf4d07d2c19b51ee0be3a8efbd1"
     },
     {
       "path": "tests/test_benchmark_spec_data.py",
